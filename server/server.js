@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 
 //Convención para obtener
 app.get('/usuario', function (req, res) {
-    res.json('Hello word')
+    res.json('Posi es GAY')
 });
 // POST convencion para crear 
 app.post('/usuario', function (req, res) {
