@@ -1,6 +1,8 @@
 require('./config/config');
 
 const express = require('express');
+const mongoose = require('mongoose');
+
 const app = express();
 const bodyParser = require('body-parser');
 
@@ -12,7 +14,7 @@ app.use(bodyParser.json())
 
 //Convención para obtener
 app.get('/usuario', function (req, res) {
-    res.json('Posi es GAY')
+    res.json('Yuri te amo')
 });
 // POST convencion para crear 
 app.post('/usuario', function (req, res) {
