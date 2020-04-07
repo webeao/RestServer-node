@@ -4,47 +4,32 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const app = express();
+
 const bodyParser = require('body-parser');
 
+
+
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
- 
+app.use(bodyParser.urlencoded({ extended: false }));
+
 // parse application/json
 app.use(bodyParser.json())
 
-//Convención para obtener
-app.get('/usuario', function (req, res) {
-    res.json('Yuri te amo')
-});
-// POST convencion para crear 
-app.post('/usuario', function (req, res) {
 
- 
+app.use(require('./routes/usuario'));
 
-    let body = req.body;
+mongoose.connect(process.env.URLDB,
+{useNewUrlParser: true, useCreateIndex: true,useUnifiedTopology: true}, 
+(err, res) => {
 
-    if ( body.nombre === undefined){
-            res.status(400).json({
-                ok: false,
-                mensaje: 'El nombre es necesario'
-            })
-    }else{
-    res.json({
-        persona: body
-    });
-}
+    if (err) {
+        throw err;
+    } else {
+        console.log('Base de datos ONLINE');
+    }
+
 });
-// PUT convención para actualizar datos
-app.put('/usuario/:id', function (req, res) {
-let id = req.params.id;
-    res.json({
-        id
-    });
-});
-// DELETE convención para eleiminarr 
-app.delete('/usuario', function (req, res) {
-    res.json('Hello word')
-});
+
 
 
 
