@@ -2,12 +2,15 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
-const Usuario = require('../models/usuario')
+const Usuario = require('../models/usuario');
+const autenticacion = require('../config/middlewares/autenticacion');
 
 const app = express();
 
 //Convención para obtener
-app.get('/usuario', function (req, res) {
+app.get('/usuario', autenticacion.verificaToken, (req, res) => {
+
+  
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -16,7 +19,7 @@ app.get('/usuario', function (req, res) {
     limite = Number(limite);
 
 
-    Usuario.find({estado:true}, 'nombre email role estado google img')
+    Usuario.find({ estado: true }, 'nombre email role estado google img')
         .skip(desde)
         .limit(limite)
         .exec((err, usuarios) => {
@@ -27,9 +30,9 @@ app.get('/usuario', function (req, res) {
                     err
                 });
             }
-          
 
-            Usuario.count({estado:true}, (err, conteo) => {
+
+            Usuario.countDocuments({ estado: true }, (err, conteo) => {
 
                 res.json({
                     ok: true,
@@ -45,7 +48,7 @@ app.get('/usuario', function (req, res) {
 
 });
 // POST convencion para crear 
-app.post('/usuario', function (req, res) {
+app.post('/usuario',[autenticacion.verificaToken,autenticacion.verificaAdmin_Role], function(req, res) {
 
     let body = req.body;
 
@@ -74,7 +77,7 @@ app.post('/usuario', function (req, res) {
 });
 
 // PUT convención para actualizar datos
-app.put('/usuario/:id', function (req, res) {
+app.put('/usuario/:id',[autenticacion.verificaToken,autenticacion.verificaAdmin_Role], function (req, res) {
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado', 'img']);
 
@@ -95,10 +98,9 @@ app.put('/usuario/:id', function (req, res) {
 
     });
 
-
 });
 // DELETE convención para eleiminarr 
-app.delete('/usuario/:id', function (req, res) {
+app.delete('/usuario/:id', [autenticacion.verificaToken,autenticacion.verificaAdmin_Role],function  (req, res) {
     let id = req.params.id;
     let cambiaEstado = {
         estado: false
