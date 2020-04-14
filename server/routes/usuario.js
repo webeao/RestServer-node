@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
 const Usuario = require('../models/usuario');
-const autenticacion = require('../config/middlewares/autenticacion');
+const autenticacion = require('../middlewares/autenticacion');
 
 const app = express();
 
@@ -81,7 +81,7 @@ app.put('/usuario/:id',[autenticacion.verificaToken,autenticacion.verificaAdmin_
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre', 'email', 'role', 'estado', 'img']);
 
-
+//{new:true, runValidators: true} para que no choque con nuestras validaciones
 
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB) => {
 

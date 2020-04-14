@@ -92,6 +92,7 @@ app.post('/google', async (req, res) => {
 
     let token = req.body.idtoken;
 
+
     let googleUser = await verify(token)
         .catch(e => {
             return res.status(403).json({
@@ -110,8 +111,6 @@ app.post('/google', async (req, res) => {
             });
         };
         if (usuarioDB) {
-
-
 
             if (usuarioDB.google === false) {
                 return res.status(400).json({
