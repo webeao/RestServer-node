@@ -1,4 +1,5 @@
 const express = require('express');
+var nodemailer = require("nodemailer");
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
@@ -47,9 +48,11 @@ app.get('/usuario', autenticacion.verificaToken, (req, res) => {
 
 
 });
+
+
 // POST convencion para crear 
 app.post('/usuario',[autenticacion.verificaToken,autenticacion.verificaAdmin_Role], function(req, res) {
-
+console.log(req.body);
     let body = req.body;
 
     let usuario = new Usuario({
@@ -75,6 +78,8 @@ app.post('/usuario',[autenticacion.verificaToken,autenticacion.verificaAdmin_Rol
     });
 
 });
+
+
 
 // PUT convención para actualizar datos
 app.put('/usuario/:id',[autenticacion.verificaToken,autenticacion.verificaAdmin_Role], function (req, res) {
@@ -154,7 +159,11 @@ app.delete('/usuario/:id', [autenticacion.verificaToken,autenticacion.verificaAd
          });
  
      });*/
+//---------------------------------------------------------------------------------
 
+
+
+//----------------------------------------------------------------------------------
 });
 
 module.exports = app;

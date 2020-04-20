@@ -4,7 +4,7 @@ let { verificaToken, verificaAdmin_Role } = require('../middlewares/autenticacio
 
 let app = express();
 
-const Categoria = require('../models/categoria');
+let Categoria = require('../models/categoria');
 
 //================================
 //Mostrar todas las categorias
@@ -67,37 +67,46 @@ app.get('/categoria', verificaToken, (req, res) => {
 
     });
 
-    //================================
-    //Crear una categoria nueva
-    //================================
-    app.post('/categoria/', verificaToken, (req, res) => {
-        // regresa la nueva categoria
-        //req.usuario._id
+  // ============================
+// Crear nueva categoria
+// ============================
+app.post('/categoria', verificaToken, (req, res) => {
+    // regresa la nueva categoria
+    // req.usuario._id
+    let body = req.body;
 
-        let body = req.body;
-
-        let categoria = new Categoria({
-            descripcion: body.descripcion,
-            usuario: req.usuario._id
-        });
-
-        categoria.save((err, categoriaDB) => {
-
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    err
-                });
-            }
-
-            res.json({
-                ok: true,
-                categoria: categoriaDB
-            });
-
-        });
+    let categoria = new Categoria({
+        descripcion: body.descripcion,
+        usuario: req.usuario._id
     });
 
+
+    categoria.save((err, categoriaDB) => {
+
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        if (!categoriaDB) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        res.json({
+            ok: true,
+            categoria: categoriaDB
+        });
+
+
+    });
+
+
+});
 
     //================================
     //Editar una categoria nueva

@@ -1,7 +1,8 @@
 const express = require('express');
-
+const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 //==========================
 //CONFIGURACIONES DE GOOGLE
 //==========================
@@ -10,14 +11,23 @@ const client = new OAuth2Client(process.env.CLIENT_ID);
 //==========================
 //==========================
 
+
 const Usuario = require('../models/usuario');
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+/*
+app.post('/login',(req,res)=>{
 
+    console.log(req.body);
+    res.send('recibido');
+})
 
+*/
 
 app.post('/login', (req, res) => {
-
+    console.log(req.body);
     let body = req.body;
 
     Usuario.findOne({ email: body.email }, (err, usuarioDB) => {
@@ -168,8 +178,8 @@ app.post('/google', async (req, res) => {
     });
 
 
-
 });
+
 module.exports = app;
 
 
