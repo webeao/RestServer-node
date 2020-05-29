@@ -14,7 +14,7 @@ app.post('/email', async (req, res) => {
     let body = req.body;
     console.log(body);
     contentHTML = `
-<h1>User Information</h1>
+<h1>Esta persona quiere contactarte</h1>
 <ul>
 <li>Username: ${name}</li>
 <li>User email: ${email}</li>
@@ -51,21 +51,24 @@ const transporter = nodemailer.createTransport({
 
 
 const info = await transporter.sendMail({
-from: "'Alert Planet'  <alertplanet@diegodavidochoa.co>",
-to: ['edwalejo21@hotmail.com','webeao@gmail.com'],
-subject: 'Contaco Alert Planet',
+from: "'Mano amiga'  <alertplanet@diegodavidochoa.co>",
+to: ['edwalejo21@hotmail.com','webeao@gmail.com','eddy.monsalver@comunidad.iush.edu.co','juan.foreroc@comunidad.iush.edu.co','juan.sotop@comunidad.iush.edu.co','carolina.estradav@comunidad.iush.edu.co'],
+subject: 'Contaco Mano amiga',
 html: contentHTML
 });
 
 console.log('Message sent', info.messageId);
    
 //res.redirect('/success.html');
-res.json({
-    ok: true,
-    informacion: info.messageId
-  
+res.send(
 
-})
+    "<h1>Mensaje enviado con exito </h1>"
+)
 });
 
 module.exports = app;
+
+
+
+
+
